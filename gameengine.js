@@ -20,6 +20,7 @@ GameEngine.prototype.init = function (ctx) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
+    this.startInput();
     this.timer = new Timer();
     console.log('game initialized');
 }
@@ -55,6 +56,26 @@ GameEngine.prototype.update = function () {
 
         entity.update();
     }
+}
+
+GameEngine.prototype.startInput = function () {
+    console.log('Starting input');
+    var that = this;
+
+    var getXandY = function (e) {
+        var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+        var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+
+        return { x: x, y: y };
+    }
+
+    this.ctx.canvas.addEventListener("click", function (e) {
+        that.click = getXandY(e);
+        console.log(that.click.x);
+        addIdle(that.click.x, that.click.y);
+    }, false);
+
+    console.log('Input started');
 }
 
 GameEngine.prototype.loop = function () {
